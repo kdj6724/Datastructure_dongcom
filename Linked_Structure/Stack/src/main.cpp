@@ -2,7 +2,7 @@
 #include "stack.h"
 
 int main(void) {
-    StackType stack;
+    StackType<char> stack;
 
     stack.Push('a');
     stack.Push('b');

@@ -1,6 +1,4 @@
-typedef char ItemType;
-struct NodeType;
-
+template <class ItemType>
 struct NodeType {
     ItemType info;
     NodeType* next;
@@ -12,6 +10,7 @@ class FullStack {
 class EmptyStack {
 };
 
+template <class ItemType>
 class StackType {
 public:
     StackType();
@@ -22,15 +21,17 @@ public:
     bool IsEmpty() const;
     bool IsFull() const;
 private:
-    NodeType* topPtr_;
+    NodeType<ItemType>* topPtr_;
 };
 
-StackType::StackType() {
+template <class ItemType>
+StackType<ItemType>::StackType() {
     topPtr_ = nullptr;
 }
 
-StackType::~StackType() {
-    NodeType* tempPtr;
+template <class ItemType>
+StackType<ItemType>::~StackType() {
+    NodeType<ItemType>* tempPtr;
 
     while (topPtr_ != nullptr) {
         tempPtr = topPtr_;
@@ -39,44 +40,49 @@ StackType::~StackType() {
     }
 }
 
-void StackType::Push(ItemType item) {
+template <class ItemType>
+void StackType<ItemType>::Push(ItemType item) {
     if (IsFull()) {
         throw FullStack();
     } else {
-        NodeType* location;
-        location = new NodeType;
+        NodeType<ItemType>* location;
+        location = new NodeType<ItemType>;
         location->info = item;
         location->next = topPtr_;
         topPtr_ = location;
     }
 }
 
-void StackType::Pop() {
+template <class ItemType>
+void StackType<ItemType>::Pop() {
     if (IsEmpty()) {
         throw EmptyStack();
     } else {
-        NodeType* tempPtr;
+        NodeType<ItemType>* tempPtr;
         tempPtr = topPtr_;
         topPtr_ = topPtr_->next;
         delete tempPtr;
     }
 }
 
-ItemType StackType::Top() {
+template <class ItemType>
+ItemType StackType<ItemType>::Top() {
     if (IsEmpty())
         throw EmptyStack();
     else
         return topPtr_->info;
 }
 
-bool StackType::IsEmpty() const {
+template <class ItemType>
+bool StackType<ItemType>::IsEmpty() const {
     return (topPtr_ == nullptr);
 }
 
-bool StackType::IsFull() const {
-    NodeType* location;
+template <class ItemType>
+bool StackType<ItemType>::IsFull() const {
+    NodeType<ItemType>* location;
     try {
-        location = new NodeType;
+        location = new NodeType<ItemType>;
         delete location;
         return false;
     } catch(std::bad_alloc exception) {
