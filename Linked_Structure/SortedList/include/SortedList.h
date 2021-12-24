@@ -5,10 +5,10 @@ struct NodeType {
 };
 
 template <class ItemType>
-class UnsortedList {
+class SortedList {
 public:
-    UnsortedList();
-    ~UnsortedList();
+    SortedList();
+    ~SortedList();
     bool IsFull() const;
     int LengthIs() const;
     void MakeEmpty();
@@ -24,18 +24,18 @@ private:
 };
 
 template <class ItemType>
-UnsortedList<ItemType>::UnsortedList() {
+SortedList<ItemType>::SortedList() {
     length_ = 0;
     listData_ = nullptr;
 }
 
 template <class ItemType>
-UnsortedList<ItemType>::~UnsortedList() {
+SortedList<ItemType>::~SortedList() {
 
 }
 
 template <class ItemType>
-bool UnsortedList<ItemType>::IsFull() const {
+bool SortedList<ItemType>::IsFull() const {
     NodeType<ItemType>* location;
     try {
         location = new NodeType<ItemType>;
@@ -47,12 +47,12 @@ bool UnsortedList<ItemType>::IsFull() const {
 }
 
 template <class ItemType>
-int UnsortedList<ItemType>::LengthIs() const {
+int SortedList<ItemType>::LengthIs() const {
     return length_;
 }
 
 template <class ItemType>
-void UnsortedList<ItemType>::MakeEmpty() {
+void SortedList<ItemType>::MakeEmpty() {
     NodeType<ItemType>* temp;
 
     while (listData_ != nullptr)
@@ -66,7 +66,7 @@ void UnsortedList<ItemType>::MakeEmpty() {
 }
 
 template <class ItemType>
-ItemType* UnsortedList<ItemType>::RetrieveItem(ItemType item, bool& found) {
+ItemType* SortedList<ItemType>::RetrieveItem(ItemType item, bool& found) {
     bool moreToSearch;
     NodeType<ItemType>* location;
 
@@ -88,18 +88,41 @@ ItemType* UnsortedList<ItemType>::RetrieveItem(ItemType item, bool& found) {
 }
 
 template <class ItemType>
-void UnsortedList<ItemType>::InsertItem(ItemType item) {
-    NodeType<ItemType>* location;
+void SortedList<ItemType>::InsertItem(ItemType item) {
+    NodeType<ItemType>* temp;
+    NodeType<ItemType>* location = listData_;
 
-    location = new NodeType<ItemType>;
-    location->info = item;
-    location->next = listData_;
-    listData_ = location;
+    temp = new NodeType<ItemType>;
+    temp->info = item;
+    temp->next = nullptr;
+
+    if (location == nullptr) {
+        location = temp;
+        listData_ = location;
+        length_++;
+        return;
+    }
+
+    while (1) {
+        if (location->next == nullptr) 
+            break;
+        if (location->next->info > item)
+            break;
+        location = location->next;
+    }
+
+    if (location->info > item) {
+        temp->next = location;
+        listData_ = temp;
+    } else {
+        temp->next = location->next;
+        location->next = temp;
+    }
     length_++;
 }
 
 template <class ItemType>
-void UnsortedList<ItemType>::DeleteItem(ItemType item) {
+void SortedList<ItemType>::DeleteItem(ItemType item) {
     NodeType<ItemType>* location = listData_;
     NodeType<ItemType>* temp;
 
@@ -117,12 +140,12 @@ void UnsortedList<ItemType>::DeleteItem(ItemType item) {
 }
 
 template <class ItemType>
-void UnsortedList<ItemType>::ResetList() {
+void SortedList<ItemType>::ResetList() {
     currentPos_ = nullptr;
 }
 
 template <class ItemType>
-void UnsortedList<ItemType>::GetNextItem(ItemType& item) {
+void SortedList<ItemType>::GetNextItem(ItemType& item) {
     if (currentPos_ == nullptr)
         currentPos_ = listData_;
     else

@@ -1,19 +1,17 @@
 #include <iostream>
-#include "UnsortedList.h"
+#include "SortedList.h"
 
 int main(void) {
-    UnsortedList<char> list;
+    SortedList<char> list;
 
+    list.InsertItem('e');
     list.InsertItem('a');
+    list.InsertItem('d');
     list.InsertItem('b');
     list.InsertItem('c');
-    list.InsertItem('d');
-    list.InsertItem('e');
 
     list.ResetList();
-    for (int i=0; i<list.LengthIs(); i++)
-    {
-        /* code */
+    for (int i=0; i<list.LengthIs(); i++) {
         char value;
         list.GetNextItem(value);
         std::cout << value << std::endl;
